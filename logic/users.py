@@ -28,13 +28,17 @@ def login(username, password):
 
     if user is None:
         print("User not found.")
+        mycursor.clear_attributes()
         return None
     
     password_bytes = password.encode("utf-8")
     if bcrypt.checkpw(password_bytes, user[1].encode("utf-8")):
         print("Login successful!")
+        mycursor.clear_attributes()
         return user[0]
     
     else:
         print("Incorrect password.")
+        mycursor.clear_attributes()
         return None
+    
