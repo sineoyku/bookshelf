@@ -27,14 +27,15 @@ def get_user_list(user_id):
         FROM 
               user_books ub
         JOIN 
-            books b ON ub.book_id = b.book_id
+            books b ON ub.book_id = b.id
         WHERE 
             ub.user_id = %s
         ORDER BY 
             ub.start_date ASC;
     """
     try:
-        result_set = mycursor.execute(sql, (user_id,))
+        mycursor.execute(sql, (user_id,))
+        result_set = mycursor.fetchall()
         mydb.commit()
     except Exception as e:
         print(f"Error getting list: {e}")
