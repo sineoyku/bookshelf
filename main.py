@@ -42,9 +42,9 @@ def starter():
                break
            else:
                attempts += 1
-               print(f"Incorrect password. Attempts left: {max_attempts - attempts}")
+               color_print([("#ff0000", f"Incorrect password. Attempts left: {max_attempts - attempts}")])
        if user_id is None:
-           print("Too many incorrect attempts. Exiting.")
+           color_print([("#ff0000", "Too many incorrect attempts. Exiting.")])
            exit()
 
     action = inquirer.select(
@@ -61,7 +61,7 @@ def starter():
     if action == "My list":
         results = user_books.get_user_list(user_id)
         if not results:
-            print("Your list is empty.")
+            color_print([("#ff0000", "Your list is empty.")])
             return
         headers = ["Title", "Status", "Start Date", "End Date"]
         print(tabulate(results, headers=headers, tablefmt="grid"))
@@ -99,27 +99,14 @@ def starter():
                     review_text = inquirer.text(message="Your review:").execute()
                     reviews.add_review(user_id, book_id, rating, review_text)
                 else:
-                    print("Book not found.")
+                    color_print([("#ff0000", "Book not found.")])
             elif action2 == "Log reading progress":
-                pages_read = int(inquirer.text(message="Pages read:").execute())
-                user_books.log_reading_progress(user_id, selected_title, pages_read)
+                color_print([("#ff0000", "logging reading progress is not available yet.")])
+                exit()
         return
     elif action == "Log reading progress":
-        # Shortcut for logging progress
-        results = user_books.get_user_list(user_id)
-        if not results:
-            print("Your list is empty.")
-            return
-        book_titles = [row[0] for row in results]
-        selected_title = inquirer.select(
-            message="Select a book to log progress:",
-            choices=book_titles + [Choice(value=None, name="Back")],
-            default=None,
-        ).execute()
-        if selected_title:
-            pages_read = int(inquirer.text(message="Pages read:").execute())
-            user_books.log_reading_progress(user_id, selected_title, pages_read)
-        return
+        color_print([("#ff0000", "logging reading progress is not available yet.")])
+        exit()
     elif action == "Search for books":
 
         title = inquirer.text(message="Title: ").execute()
@@ -157,7 +144,7 @@ def starter():
             from logic import reviews
             reviews_list = reviews.get_reviews(book_id)
             if not reviews_list:
-                print("No reviews yet.")
+                color_print([("#ff0000", "No reviews yet.")])
             else:
                 headers = ["User", "Rating", "Review", "Date"]
                 print(tabulate(reviews_list, headers=headers, tablefmt="grid"))
@@ -165,7 +152,7 @@ def starter():
             from logic import reviews
             reviews_list = reviews.get_reviews(book_id)
             if not reviews_list:
-                print("No reviews yet.")
+                color_print([("#ff0000", "No reviews yet.")])
             else:
                 headers = ["User", "Rating", "Review", "Date"]
                 print(tabulate(reviews_list, headers=headers, tablefmt="grid"))
