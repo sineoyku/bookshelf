@@ -44,3 +44,38 @@ def get_user_list(user_id):
     return result_set
     
 
+def update_book_status(user_id, book_title, new_status):
+    sql = '''
+        UPDATE user_books ub
+        JOIN books b ON ub.book_id = b.id
+        SET ub.status = %s
+        WHERE ub.user_id = %s AND b.title = %s
+    '''
+    try:
+        mycursor.execute(sql, (new_status, user_id, book_title))
+        mydb.commit()
+    except Exception as e:
+        print(f"Error updating status: {e}")
+        return False
+    mycursor.clear_attributes()
+    print("Status updated!")
+    return True
+
+def log_reading_progress(user_id, book_title, pages_read):
+    sql = '''
+        UPDATE user_books ub
+        JOIN books b ON ub.book_id = b.id
+        SET ub.pages_read = %s
+        WHERE ub.user_id = %s AND b.title = %s
+    '''
+    try:
+        mycursor.execute(sql, (pages_read, user_id, book_title))
+        mydb.commit()
+    except Exception as e:
+        print(f"Error logging progress: {e}")
+        return False
+    mycursor.clear_attributes()
+    print("Progress logged!")
+    return True
+    
+
