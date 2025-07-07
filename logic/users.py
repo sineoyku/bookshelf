@@ -41,4 +41,11 @@ def login(username, password):
         print("Incorrect password.")
         mycursor.clear_attributes()
         return None
+
+def check_user_exists(username):
+    mycursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+    if mycursor.fetchone():
+        return True
+    else:
+        return False
     

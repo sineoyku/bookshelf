@@ -1,3 +1,4 @@
+from re import A
 from tabulate import tabulate
 from InquirerPy.utils import color_print
 from InquirerPy import inquirer
@@ -22,6 +23,10 @@ def starter():
 
     if action == "Sign-up":
         username = inquirer.text(message="Username:").execute()
+        if users.check_user_exists(username) is True:
+           color_print([("#ff0000", "User already exists.")])
+           exit() 
+           
         password = inquirer.secret(
             message="Password:",
             transformer=lambda _: "[hidden]").execute() 
@@ -30,6 +35,10 @@ def starter():
 
     elif action == "Login":
        username = inquirer.text(message="Username").execute()
+       if users.check_user_exists(username) is False: 
+        color_print([("#ff0000", "User not found.")])
+        exit()
+
        max_attempts = 3
        attempts = 0
        user_id = None
