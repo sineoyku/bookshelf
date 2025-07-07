@@ -30,11 +30,22 @@ def starter():
 
     elif action == "Login":
        username = inquirer.text(message="Username").execute()
-       password = inquirer.secret(
-            message="Password",
-            transformer=lambda _: "[hidden]").execute() 
-    
-       user_id = users.login(username, password) 
+       max_attempts = 3
+       attempts = 0
+       user_id = None
+       while attempts < max_attempts:
+           password = inquirer.secret(
+                message="Password",
+                transformer=lambda _: "[hidden]").execute() 
+           user_id = users.login(username, password)
+           if user_id is not None:
+               break
+           else:
+               attempts += 1
+               print(f"Incorrect password. Attempts left: {max_attempts - attempts}")
+       if user_id is None:
+           print("Too many incorrect attempts. Exiting.")
+           exit()
 
     action = inquirer.select(
         message="What are you looking for?",
@@ -134,6 +145,7 @@ def starter():
             choices=[
                 "Add to my List",
                 "Look at reviews",
+                "List book's reviews",
                 Choice(value=None, name="Exit"),
             ],
             default=None,
@@ -142,6 +154,14 @@ def starter():
         if action == "Add to my List":
             user_books.add_to_list(user_id, book_id)
         elif action == "Look at reviews":
+            from logic import reviews
+            reviews_list = reviews.get_reviews(book_id)
+            if not reviews_list:
+                print("No reviews yet.")
+            else:
+                headers = ["User", "Rating", "Review", "Date"]
+                print(tabulate(reviews_list, headers=headers, tablefmt="grid"))
+        elif action == "List book's reviews":
             from logic import reviews
             reviews_list = reviews.get_reviews(book_id)
             if not reviews_list:
