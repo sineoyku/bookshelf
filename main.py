@@ -55,6 +55,8 @@ def starter():
        if user_id is None:
            color_print([("#ff0000", "Too many incorrect attempts. Exiting.")])
            exit()
+    elif action is None:
+        exit()
 
     action = inquirer.select(
         message="What are you looking for?",
