@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="profile-container">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+        <h2>Settings</h2>
+        <ul>
+            <li><a href="#">Account</a></li>
+            <li><a href="#">Preferences</a></li>
+            <li><a href="{{ url_for('logout') }}">Log out</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main content -->
+    <div class="profile-main">
+        <header class="profile-header">
+            <img src="{{ url_for('static', filename='images/profile_placeholder.png') }}" alt="Profile" id="profilePic" class="profile-pic">
+            <input type="text" id="searchInput" placeholder="Search books..." class="search-input">
+        </header>
+
+        <!-- Recent Reads -->
+        <section class="recent-books list-section">
+            <h2>Recent Reads</h2>
+            <div class="carousel-wrapper">
+                <button id="prevRecentBtn" class="arrow-btn">&#9664;</button>
+                <ul id="recentCarousel" class="books-carousel">
+                    {% for book in recent_books %}
+                        {% if book is none %}
+                        <li class="book-card empty"></li>
+                        {% else %}
+                        <li class="book-card {% if book.status == 'reading' %}current{% endif %}">
+                            <div class="cover">
+                                <img src="{{ url_for('static', filename='images/default_book.png') }}" alt="Book cover">
+                                {% if book.status == 'reading' %}
+                                    <button class="action-btn">Log Progress</button>
+                                {% elif book.status == 'read' %}
+                                    <button class="action-btn">Review</button>
+                                {% endif %}
+                            </div>
+                            <p class="book-title">{{ book.title }}</p>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                <button id="nextRecentBtn" class="arrow-btn">&#9654;</button>
+            </div>
+        </section>
+
+        <!-- My List -->
+        <section class="recent-books list-section">
+            <h2>Next Reads</h2>
+            <div class="carousel-wrapper">
+                <button id="prevMyBtn" class="arrow-btn">&#9664;</button>
+                <ul id="myListCarousel" class="books-carousel">
+                    {% for book in my_list %}
+                        {% if book is none %}
+                        <li class="book-card empty"></li>
+                        {% else %}
+                        <li class="book-card">
+                            <div class="cover">
+                                <img src="{{ url_for('static', filename='images/default_book.png') }}" alt="Book cover">
+                                <button class="action-btn start-reading-btn" data-title="{{ book.title }}">Start Reading</button>
+                            </div>
+                            <p class="book-title">{{ book.title }}</p>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                <button id="nextMyBtn" class="arrow-btn">&#9654;</button>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Sidebar toggle
+const profilePic = document.getElementById('profilePic');
+const sidebar = document.getElementById('sidebar');
+profilePic?.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+});
+
+// Close sidebar when clicking outside
+document.addEventListener('click', (e)=>{
+  if(sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== profilePic){
+     sidebar.classList.remove('open');
+  }
+});
+
+function attachCarousel(prevId, nextId, carouselId){
+  const prevBtn = document.getElementById(prevId);
+  const nextBtn = document.getElementById(nextId);
+  const carousel = document.getElementById(carouselId);
+  if(!carousel) return;
+  const scrollAmount = carousel.querySelector('.book-card')?.offsetWidth + 20 || 220;
+  prevBtn?.addEventListener('click', ()=> carousel.scrollBy({left: -scrollAmount, behavior:'smooth'}));
+  nextBtn?.addEventListener('click', ()=> carousel.scrollBy({left: scrollAmount, behavior:'smooth'}));
+}
+attachCarousel('prevRecentBtn','nextRecentBtn','recentCarousel');
+attachCarousel('prevMyBtn','nextMyBtn','myListCarousel');
+
+// Search autocomplete
+const searchInput = document.getElementById('searchInput');
+searchInput?.addEventListener('input', async (e) => {
+  const q = e.target.value.trim();
+  if(q.length < 2) return;
+  const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+  const data = await res.json();
+  console.log(data); // TODO: display suggestions / results
+});
+
+// Start Reading button handler
+document.querySelectorAll('.start-reading-btn').forEach(btn => {
+  btn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const title = btn.dataset.title;
+    const res = await fetch('/api/start-reading', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title })
+    });
+    const data = await res.json();
+    if(data.success){
+      location.reload();
+    }else{
+      alert('Failed to start reading');
+    }
+  });
+});
+</script>
+{% endblock %} 
