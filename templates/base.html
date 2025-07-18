@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshelf-Ma</title>
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    {% block content %}{% endblock %}
+
+    <footer class="footer">
+        <p>Contact: sineoykuyasar@example.com | <a href="https://github.com/sineoykuyasar/bookshelf" target="_blank">GitHub</a></p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

@@ -1,0 +1,5 @@
+flask
+flask-dance
+flask-login
+mysql-connector-python
+bcrypt 

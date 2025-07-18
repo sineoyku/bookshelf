@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-inner">
+        <div class="welcome-text">
+            <h1 class="line1">Welcome to</h1>
+            <h1 class="line2"><a href="{{ url_for('index') }}">bookshelf !</a></h1>
+        </div>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-bg">
+    </div>
+    <div class="nav-buttons">
+        <a href="{{ url_for('blog') }}" class="btn primary">Blog</a>
+        <a href="{{ url_for('login') }}" class="btn secondary">Sign In</a>
+    </div>
+</section>
+{% endblock %} 

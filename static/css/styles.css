@@ -1,0 +1,145 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+html, body {
+    height: 100%;
+}
+body {
+    color: #000000;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hero Section */
+.hero {
+    height: 100%; 
+    background: linear-gradient(#7b95bf,#416db3,#e1aec2) ;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+}
+
+.hero-inner {
+    flex: 60%;
+    position: relative;
+    max-width: 960px;
+}
+
+.logo-bg {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 850px;
+    transform: translate(-50%, -50%);
+    opacity: 50%;
+    z-index: 1;
+}
+
+.welcome-text{
+    position: absolute;
+    left: 40%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.welcome-text .line1 {
+    font-size: 6rem;
+    color: #ffffff;
+}
+.welcome-text .line2 {
+    font-size: 6rem;
+    color: #ed96b9; /* Accent color */
+}
+.welcome-text .line2 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 20px 40px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #ed96b9;
+    text-align: center;
+    transition: background 0.3s;
+}
+.btn:hover {
+    background-color:#c26188;
+}
+.btn.secondary {
+    background-color: #eabdcf;
+}
+.btn.secondary:hover {
+    background-color: #cd89a4;
+}
+
+.nav-buttons {
+    margin-top: 20px;
+    font-size: x-large;
+}
+
+/* Top books */
+.top-books {
+    padding: 40px 20px;
+    text-align: center;
+}
+.top-books h2 {
+    margin-bottom: 20px;
+}
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+.book-card {
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.book-card img {
+    width: 100%;
+    border-radius: 4px;
+}
+.book-card h3 {
+    font-size: 1.1rem;
+    margin: 10px 0 4px;
+}
+.book-card .authors {
+    font-size: 0.9rem;
+    color: #777;
+}
+.rating {
+    display: inline-block;
+    margin-top: 6px;
+    font-weight: bold;
+    color: #ed96b9;
+}
+
+/* Footer */
+.footer {
+    margin-top: 60px;
+    padding: 20px 0;
+    text-align: center;
+    background: #efefef;
+    color: #555;
+    margin-top: auto;
+}
+.footer a {
+    color: #ed96b9;
+} 

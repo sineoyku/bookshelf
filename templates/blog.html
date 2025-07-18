@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="top-books">
+    <h2>Top Books of the Week</h2>
+    <div class="books-grid">
+        {% for book in top_books %}
+        <div class="book-card">
+            <img src="{{ url_for('static', filename='img/book_def.jpg') }}" alt="Book cover">
+            <h3>{{ book[1] }}</h3>
+            <p class="authors">{{ book[2] }}</p>
+            <span class="rating">⭐ {{ book[3] }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="blog-page">
+    <h1>Book Reviews</h1>
+    <div class="review-list">
+        {% for r in reviews %}
+        <div class="review-card">
+            <h3>{{ r[0] }}</h3> <!-- Book title -->
+            <p class="details">by {{ r[1] }} | ⭐ {{ r[2] }} | {{ r[4].strftime('%Y-%m-%d') if r[4] }} </p>
+            <p class="comment">{{ r[3] }}</p>
+        </div>
+        {% else %}
+        <p>No reviews yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %} 

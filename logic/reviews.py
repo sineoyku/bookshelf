@@ -33,3 +33,21 @@ def get_reviews(book_id):
         return []
     mycursor.clear_attributes()
     return result
+
+def get_recent_reviews(limit=20):
+    sql = '''
+        SELECT b.title, u.username, r.rating, r.comment, r.review_date
+        FROM reviews r
+        JOIN books b ON r.book_id = b.id
+        JOIN users u ON r.user_id = u.id
+        ORDER BY r.review_date DESC
+        LIMIT %s
+    '''
+    try:
+        mycursor.execute(sql, (limit,))
+        result = mycursor.fetchall()
+    except Exception as e:
+        print(f"Error fetching recent reviews: {e}")
+        return []
+    mycursor.clear_attributes()
+    return result
